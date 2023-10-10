@@ -1,0 +1,27 @@
+/*
+Pastel theme for Calculator UI.
+*/
+
+QWidget {
+    background-color: rgb(255, 225, 252);
+}
+
+QLineEdit {
+    background-color: rgb(255, 250, 254);
+    border-color: rgb(170, 170, 255);
+    border-radius: 10px;
+    border-style: outset;
+    border-width: 2px;
+    color: rgb(108, 108, 205);
+    selection-background-color: rgb(110, 218, 248);
+}
+
+QPushButton {
+    background: rgb(170, 170, 255);
+    border-color: rgb(110, 218, 248);
+    border-radius: 12px;
+    border-style: outset;
+    border-width: 2px;
+    color: white;
+    padding: 5px;
+}
