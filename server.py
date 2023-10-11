@@ -1,6 +1,6 @@
 import socket
 
-import sympy
+from calculator import Calculator
 
 
 class Server(object):
@@ -10,12 +10,10 @@ class Server(object):
         self.buffer = buffer
         self.connection = None
         self.address = None
-
-    def instantiate_socket(self):
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.calculator = Calculator()
 
     def bind(self):
-        self.instantiate_socket()
         self.socket.bind((self.host, self.port))
         self.socket.listen(1)
         self.connection, self.address = self.socket.accept()
@@ -24,13 +22,24 @@ class Server(object):
         self.bind()
 
         while True:
+            # receive data
             data = self.connection.recv(self.buffer).decode()
-            print("Input: ", data)
             if not data:
                 break
-            result = float(sympy.sympify(str(data)))
-            self.connection.send(str(result).encode())
+            print(f"Input: {data}")
 
+            # compute calculation
+            result, success = self.calculator.run(data)
+
+            # print result to console
+            console_msg = f"Output: {result}" if success else result
+            print(console_msg)
+
+            # send result to client
+            self.connection.send(result.encode())
+
+        # close connection
+        print("Closing connection.")
         self.connection.close()
 
 

@@ -1,4 +1,5 @@
 # built-in imports
+import logging
 import sys
 from collections import OrderedDict
 from functools import partial
@@ -6,23 +7,27 @@ from pathlib import Path
 
 # third party imports
 from PySide6 import QtCore, QtGui, QtWidgets
-from sympy import sympify
 
 # custom imports
-from client import CalculatorClient
+import logger
+from calculator import Calculator
+from client import Client
 
 
-class CalculatorUI(QtWidgets.QMainWindow, CalculatorClient):
+LOG = logger.create_logger()
+
+
+class CalculatorUI(QtWidgets.QMainWindow, Client):
     WIN_WIDTH, WIN_HEIGHT = (200, 300)
 
     def __init__(
         self,
-        window_title="Calculator",
-        right_align=False,
-        reverse_order=False,
-        use_server=False,
-        server_ip="0.0.0.0",
-    ):
+        window_title: str = "Calculator",
+        right_align: bool = False,
+        reverse_order: bool = False,
+        use_server: bool = False,
+        server_ip: str = "0.0.0.0",
+    ) -> None:
         """Class to build the UI for calculating arithmetic strings."""
         super(CalculatorUI, self).__init__(server_ip=server_ip)
         self.right_align = right_align
@@ -30,6 +35,7 @@ class CalculatorUI(QtWidgets.QMainWindow, CalculatorClient):
         self.use_server = use_server
         self.input_string = ""
         self.button_list = []
+        self.calculator = Calculator()
 
         self.create_main_window(window_title)
         self.create_menu_bar()
@@ -40,9 +46,9 @@ class CalculatorUI(QtWidgets.QMainWindow, CalculatorClient):
             success = self.connect_to_host()
             if not success:
                 self.use_server = False
-                print("Using built-in calculator")
+                LOG.info("Using built-in calculator")
 
-    def closeEvent(self, event):
+    def closeEvent(self, event: QtCore.QEvent) -> None:
         if self.use_server:
             self.close_connection()
         super(CalculatorUI, self).closeEvent(event)
@@ -51,7 +57,7 @@ class CalculatorUI(QtWidgets.QMainWindow, CalculatorClient):
     # UI Main Functions
     # -----------------
 
-    def create_main_window(self, title):
+    def create_main_window(self, title: str) -> None:
         """Sets the main window's dimensions and title."""
         self.setWindowTitle(title)
         self.setMinimumSize(self.WIN_WIDTH, self.WIN_HEIGHT)
@@ -61,17 +67,31 @@ class CalculatorUI(QtWidgets.QMainWindow, CalculatorClient):
         self.main_layout = QtWidgets.QVBoxLayout(self.main_widget)
         self.main_layout.setSpacing(1)
 
-    def create_menu_bar(self):
+    def create_menu_bar(self) -> None:
         """Creates the menu bar with layout and theme options."""
         menu_bar = self.menuBar()
 
+        # layout options
         prefs_menu = menu_bar.addMenu("Preferences")
-        self.create_menu_action("Right Align", "actn_prefs_alignment", prefs_menu)
-        self.create_menu_action("Reverse Order", "actn_prefs_order", prefs_menu)
-        self.actn_prefs_alignment.triggered.connect(self.alignment_action_clicked)
-        self.actn_prefs_order.triggered.connect(self.order_action_clicked)
+        self.create_menu_action(
+            "Right Align", "actn_prefs_alignment", prefs_menu
+        )
+        self.create_menu_action(
+            "Reverse Order", "actn_prefs_order", prefs_menu
+        )
+        self.actn_prefs_alignment.triggered.connect(
+            self.alignment_pref_action_clicked
+        )
+        self.actn_prefs_order.triggered.connect(self.order_pref_action_clicked)
 
-        self.theme_list = ["default", "minimal", "pastel", "twilight"]
+        # theme options
+        self.theme_list = [
+            "default",
+            "minimal",
+            "pastel",
+            "terminal",
+            "twilight",
+        ]
         theme_menu = menu_bar.addMenu("Theme")
         theme_group = QtGui.QActionGroup(theme_menu)
         for theme in self.theme_list:
@@ -83,7 +103,7 @@ class CalculatorUI(QtWidgets.QMainWindow, CalculatorClient):
             )
             action.triggered.connect(partial(self.theme_action_clicked, theme))
 
-    def create_layout(self):
+    def create_layout(self) -> None:
         """
         Creates the main calculator layout.
         Contains the number pad, input, and output fields.
@@ -111,7 +131,7 @@ class CalculatorUI(QtWidgets.QMainWindow, CalculatorClient):
         numpad_layout = self.create_numpad_layout()
         self.main_layout.addLayout(numpad_layout)
 
-    def create_numpad_layout(self):
+    def create_numpad_layout(self) -> None:
         """
         Creates the calculator number pad and operator buttons.
         Handles layout modifications depending on alignment and numpad order.
@@ -146,20 +166,22 @@ class CalculatorUI(QtWidgets.QMainWindow, CalculatorClient):
 
         return layout
 
-    def create_connections(self):
+    def create_connections(self) -> None:
         """Creates connections between the buttons and actions."""
 
         # input
         self.input_lineedit.textChanged.connect(self.input_changed)
-        self.input_lineedit.returnPressed.connect(self.eq_button_clicked)
+        self.input_lineedit.returnPressed.connect(self.equal_button_clicked)
 
         # numpad buttons
         self.btn_clear.clicked.connect(self.clear_button_clicked)
         for button in self.button_list:
             if button in [self.btn_ops_eq, self.btn_clear]:
                 continue
-            button.clicked.connect(partial(self.build_input_string, button.text()))
-        self.btn_ops_eq.clicked.connect(self.eq_button_clicked)
+            button.clicked.connect(
+                partial(self.build_input_string, button.text())
+            )
+        self.btn_ops_eq.clicked.connect(self.equal_button_clicked)
 
     # -------------------
     # UI Helper Functions
@@ -193,7 +215,10 @@ class CalculatorUI(QtWidgets.QMainWindow, CalculatorClient):
         return action
 
     def create_button(
-        self, text: str, var_name: str, layout: QtWidgets.QLayout
+        self,
+        text: str,
+        var_name: str,
+        layout: QtWidgets.QLayout,
     ) -> None:
         """
         Creates a button and associated variable within the class.
@@ -225,12 +250,17 @@ class CalculatorUI(QtWidgets.QMainWindow, CalculatorClient):
             reverse: bool indicating whether numpad order is reversed
         """
         clear_button_info = ("clear", "AC")
+
+        # keep button order by reversing twice if only right align checked
+        if self.right_align and not self.reverse_order:
+            button_info.reverse()
         if reverse:
             if self.right_align:
                 button_info.reverse()
                 button_info.append(clear_button_info)
             else:
                 button_info.insert(0, clear_button_info)
+
         buttons = OrderedDict(button_info)
         for key, val in buttons.items():
             self.create_button(val, f"btn_{key}", layout)
@@ -281,42 +311,60 @@ class CalculatorUI(QtWidgets.QMainWindow, CalculatorClient):
                 getattr(self, numpad_row_name),
             )
 
+    def create_error_popup(self, message: str) -> None:
+        """Creates a popup to display errors in the UI."""
+        popup = QtWidgets.QErrorMessage(self)
+        popup.showMessage(message)
+
     # -------------------------
     # Connection Main Functions
     # -------------------------
 
-    def input_changed(self):
+    def input_changed(self) -> None:
         """Updates input string based on keyboard input via line edit widget."""
         self.input_string = self.input_lineedit.text()
 
-    def clear_button_clicked(self):
+    def clear_button_clicked(self) -> None:
         """Clears the input string and UI."""
         self.clear_input_string()
         if self.result_lineedit.text():
             self.result_lineedit.clear()
 
-    def eq_button_clicked(self):
+    def equal_button_clicked(self) -> None:
         """Sends input string to be calculated."""
+        LOG.info(f"Input: {self.input_string}")
+
         if not self.input_string:
             return
+
+        result = None
         if self.use_server:
             result = self.send_to_server(self.input_string)
         else:
-            result = str(float(sympify(self.input_string)))
-        self.result_lineedit.setText(result)
-        self.input_string = result
+            result, _ = self.calculator.run(self.input_string)
 
-    def alignment_action_clicked(self) -> None:
+        if "Error" in result:
+            LOG.error(result)
+            self.create_error_popup(result)
+            self.clear_input_string()
+            self.result_lineedit.clear()
+        else:
+            LOG.info(f"Result: {result}")
+            self.input_string = result
+            self.result_lineedit.setText(result)
+
+    def alignment_pref_action_clicked(self) -> None:
         """Toggles the numpad alignment."""
         self.right_align = not self.right_align
         self.rebuild_widget()
 
-    def order_action_clicked(self) -> None:
+    def order_pref_action_clicked(self) -> None:
         """Toggles the numpad order."""
         self.reverse_order = not self.reverse_order
         self.rebuild_widget()
 
-    def theme_action_clicked(self, theme_name) -> None:
+    def theme_action_clicked(self, theme_name: str) -> None:
+        """Sets the selected theme."""
         theme_action = getattr(self, f"actn_theme_{theme_name}")
         checked = theme_action.isChecked()
         qss_file = f"themes/{theme_name}.qss"
@@ -330,12 +378,12 @@ class CalculatorUI(QtWidgets.QMainWindow, CalculatorClient):
     # Connection Helper Functions
     # ---------------------------
 
-    def build_input_string(self, x):
+    def build_input_string(self, x: str) -> None:
         """Builds the input string based on numpad input."""
         self.input_string += x
         self.input_lineedit.setText(self.input_string)
 
-    def clear_input_string(self):
+    def clear_input_string(self) -> None:
         """Clears the input string."""
         self.input_string = ""
         self.input_lineedit.clear()
@@ -352,7 +400,8 @@ class CalculatorUI(QtWidgets.QMainWindow, CalculatorClient):
 
         self.button_list = []
 
-    def rebuild_widget(self):
+    def rebuild_widget(self) -> None:
+        """Clears and rebuilds main widget layout."""
         result = self.result_lineedit.text()
         self.clear_layout(self.main_layout)
         self.create_layout()
@@ -360,7 +409,7 @@ class CalculatorUI(QtWidgets.QMainWindow, CalculatorClient):
         self.input_lineedit.setText(self.input_string)
         self.result_lineedit.setText(result)
 
-    def set_theme(self, qss_file) -> None:
+    def set_theme(self, qss_file: str) -> None:
         """Sets the style sheet to the given qss file."""
         with open(qss_file, "r") as theme:
             self.setStyleSheet(theme.read())

@@ -1,7 +1,10 @@
+import logging
 import socket
 
+LOG = logging.getLogger(__name__)
 
-class CalculatorClient(object):
+
+class Client(object):
     def __init__(self, server_ip="0.0.0.0", port=8000, buffer=1024):
         self.host = socket.gethostbyname(socket.gethostname())
         # self.host = server_ip
@@ -12,10 +15,12 @@ class CalculatorClient(object):
 
     def connect_to_host(self):
         try:
+            LOG.info("Connecting to server...")
             self.socket.connect((self.host, self.port))
+            LOG.info(f"Connected to: {self.host}:{self.port}")
             return True
         except Exception as e:
-            print(e)
+            LOG.error(f"Connection failed: {e}")
             return False
 
     def send_to_server(self, message=""):
