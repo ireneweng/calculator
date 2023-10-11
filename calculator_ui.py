@@ -9,30 +9,31 @@ from pathlib import Path
 from PySide6 import QtCore, QtGui, QtWidgets
 
 # custom imports
-import logger
 from calculator import Calculator
 from client import Client
 
-
-LOG = logger.create_logger()
+IP = "10.8.9.174"
+# IP = "172.18.0.2"
+LOG = logging.getLogger(__name__)
 
 
 class CalculatorUI(QtWidgets.QMainWindow, Client):
+    """Class to build the UI for calculating arithmetic strings."""
+
     WIN_WIDTH, WIN_HEIGHT = (200, 300)
+    VALID_INPUT_REGEX = "^([-+]? ?(\d+|\(\g<1>\))( ?[-+*\/] ?\g<1>)?)$"
 
     def __init__(
         self,
         window_title: str = "Calculator",
-        right_align: bool = False,
-        reverse_order: bool = False,
         use_server: bool = False,
         server_ip: str = "0.0.0.0",
     ) -> None:
-        """Class to build the UI for calculating arithmetic strings."""
         super(CalculatorUI, self).__init__(server_ip=server_ip)
-        self.right_align = right_align
-        self.reverse_order = reverse_order
         self.use_server = use_server
+
+        self.right_align = False
+        self.reverse_order = False
         self.input_string = ""
         self.button_list = []
         self.calculator = Calculator()
@@ -49,9 +50,8 @@ class CalculatorUI(QtWidgets.QMainWindow, Client):
                 LOG.info("Using built-in calculator")
 
     def closeEvent(self, event: QtCore.QEvent) -> None:
-        if self.use_server:
-            self.close_connection()
         super(CalculatorUI, self).closeEvent(event)
+        LOG.info("--------- Closed calculator. ---------")
 
     # -----------------
     # UI Main Functions
@@ -73,15 +73,9 @@ class CalculatorUI(QtWidgets.QMainWindow, Client):
 
         # layout options
         prefs_menu = menu_bar.addMenu("Preferences")
-        self.create_menu_action(
-            "Right Align", "actn_prefs_alignment", prefs_menu
-        )
-        self.create_menu_action(
-            "Reverse Order", "actn_prefs_order", prefs_menu
-        )
-        self.actn_prefs_alignment.triggered.connect(
-            self.alignment_pref_action_clicked
-        )
+        self.create_menu_action("Right Align", "actn_prefs_alignment", prefs_menu)
+        self.create_menu_action("Reverse Order", "actn_prefs_order", prefs_menu)
+        self.actn_prefs_alignment.triggered.connect(self.alignment_pref_action_clicked)
         self.actn_prefs_order.triggered.connect(self.order_pref_action_clicked)
 
         # theme options
@@ -110,9 +104,7 @@ class CalculatorUI(QtWidgets.QMainWindow, Client):
         """
         self.input_lineedit = QtWidgets.QLineEdit()
         self.input_lineedit.setAlignment(QtCore.Qt.AlignRight)
-        regex = QtCore.QRegularExpression(
-            "^([-+]? ?(\d+|\(\g<1>\))( ?[-+*\/] ?\g<1>)?)$"
-        )
+        regex = QtCore.QRegularExpression(self.VALID_INPUT_REGEX)
         validator = QtGui.QRegularExpressionValidator(regex)
         self.input_lineedit.setValidator(validator)
         self.main_layout.addWidget(self.input_lineedit)
@@ -178,9 +170,7 @@ class CalculatorUI(QtWidgets.QMainWindow, Client):
         for button in self.button_list:
             if button in [self.btn_ops_eq, self.btn_clear]:
                 continue
-            button.clicked.connect(
-                partial(self.build_input_string, button.text())
-            )
+            button.clicked.connect(partial(self.build_input_string, button.text()))
         self.btn_ops_eq.clicked.connect(self.equal_button_clicked)
 
     # -------------------
@@ -251,7 +241,7 @@ class CalculatorUI(QtWidgets.QMainWindow, Client):
         """
         clear_button_info = ("clear", "AC")
 
-        # keep button order by reversing twice if only right align checked
+        # keep button order by reversing twice if only right-align checked
         if self.right_align and not self.reverse_order:
             button_info.reverse()
         if reverse:
@@ -332,8 +322,6 @@ class CalculatorUI(QtWidgets.QMainWindow, Client):
 
     def equal_button_clicked(self) -> None:
         """Sends input string to be calculated."""
-        LOG.info(f"Input: {self.input_string}")
-
         if not self.input_string:
             return
 
@@ -341,15 +329,13 @@ class CalculatorUI(QtWidgets.QMainWindow, Client):
         if self.use_server:
             result = self.send_to_server(self.input_string)
         else:
-            result, _ = self.calculator.run(self.input_string)
+            result = self.calculator.run(self.input_string)
 
         if "Error" in result:
-            LOG.error(result)
             self.create_error_popup(result)
             self.clear_input_string()
             self.result_lineedit.clear()
         else:
-            LOG.info(f"Result: {result}")
             self.input_string = result
             self.result_lineedit.setText(result)
 
@@ -357,22 +343,24 @@ class CalculatorUI(QtWidgets.QMainWindow, Client):
         """Toggles the numpad alignment."""
         self.right_align = not self.right_align
         self.rebuild_widget()
+        LOG.debug(f"Set numpad right-align to {self.right_align}")
 
     def order_pref_action_clicked(self) -> None:
         """Toggles the numpad order."""
         self.reverse_order = not self.reverse_order
         self.rebuild_widget()
+        LOG.debug(f"Set numpad reverse order to {self.reverse_order}")
 
     def theme_action_clicked(self, theme_name: str) -> None:
         """Sets the selected theme."""
         theme_action = getattr(self, f"actn_theme_{theme_name}")
-        checked = theme_action.isChecked()
-        qss_file = f"themes/{theme_name}.qss"
-        if checked and Path(qss_file).exists():
-            qss_file = f"themes/{theme_name}.qss"
-            self.set_theme(qss_file)
+        css_file = Path("themes") / f"{theme_name}.css"
+        if theme_action.isChecked() and css_file.exists():
+            self.set_theme(css_file)
+            LOG.debug(f"Set theme to {theme_name.capitalize()}")
         else:
             self.clear_theme()
+            LOG.debug(f"Cleared theme")
 
     # ---------------------------
     # Connection Helper Functions
@@ -397,7 +385,6 @@ class CalculatorUI(QtWidgets.QMainWindow, Client):
                 widget.deleteLater()
             else:
                 self.clear_layout(item.layout())
-
         self.button_list = []
 
     def rebuild_widget(self) -> None:
@@ -409,9 +396,9 @@ class CalculatorUI(QtWidgets.QMainWindow, Client):
         self.input_lineedit.setText(self.input_string)
         self.result_lineedit.setText(result)
 
-    def set_theme(self, qss_file: str) -> None:
-        """Sets the style sheet to the given qss file."""
-        with open(qss_file, "r") as theme:
+    def set_theme(self, css_file: str) -> None:
+        """Sets the style sheet to the given css file."""
+        with open(css_file, "r") as theme:
             self.setStyleSheet(theme.read())
 
     def clear_theme(self) -> None:
@@ -419,10 +406,12 @@ class CalculatorUI(QtWidgets.QMainWindow, Client):
         self.setStyleSheet("")
 
 
-if __name__ == "__main__":
-    # ip = "10.8.9.174"
-    ip = "172.18.0.2"
+def main():
     app = QtWidgets.QApplication(sys.argv)
-    calc = CalculatorUI(use_server=True, server_ip=ip)
+    calc = CalculatorUI(use_server=True, server_ip=IP)
     calc.show()
     sys.exit(app.exec())
+
+
+if __name__ == "__main__":
+    main()

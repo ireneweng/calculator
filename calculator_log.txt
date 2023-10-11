@@ -1,0 +1,9 @@
+[16:16:49] calculator.py     :14 INFO - Input: 3+4-1
+[16:16:49] calculator.py     :18 INFO - Output: 6.00000000
+[16:17:47] calculator.py     :14 INFO - Input: 3+4-1
+[16:17:47] calculator.py     :18 INFO - Output: 6.00000000
+[16:17:51] client.py         :23 INFO - Connecting to server...
+[16:17:51] client.py         :25 INFO - Connected to 10.8.9.174:8000
+[16:17:54] client.py         :36 INFO - Sending: 8-6
+[16:17:54] client.py         :41 INFO - Received: 2.00000000
+[16:17:55] calculator_ui.py  :56 INFO - --------- Closed calculator. ---------

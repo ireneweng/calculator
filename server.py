@@ -4,21 +4,27 @@ from calculator import Calculator
 
 
 class Server(object):
-    def __init__(self, port=8000, buffer=1024):
+    """Simple server class."""
+
+    def __init__(self, port: int = 8000, buffer: int = 1024):
         self.host = socket.gethostbyname(socket.gethostname())
         self.port = port
         self.buffer = buffer
         self.connection = None
         self.address = None
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.calculator = Calculator()
 
-    def bind(self):
+    def bind(self) -> None:
+        """Binds the socket and waits for an incoming connection."""
         self.socket.bind((self.host, self.port))
         self.socket.listen(1)
         self.connection, self.address = self.socket.accept()
 
-    def run(self):
+    def run(self, class_inst: object) -> None:
+        """
+        Runs the given class on the server.
+        Assumes the class includes a run() function and accepts a string input.
+        """
         self.bind()
 
         while True:
@@ -26,23 +32,24 @@ class Server(object):
             data = self.connection.recv(self.buffer).decode()
             if not data:
                 break
-            print(f"Input: {data}")
+            print(f"Received: {data}")
 
-            # compute calculation
-            result, success = self.calculator.run(data)
-
-            # print result to console
-            console_msg = f"Output: {result}" if success else result
-            print(console_msg)
+            # execute class - assumes there is a run function
+            result = class_inst.run(data)
 
             # send result to client
-            self.connection.send(result.encode())
+            self.connection.send(str(result).encode())
+            print(f"Sent: {result}")
 
         # close connection
-        print("Closing connection.")
         self.connection.close()
+        print("Closed connection")
+
+
+def main():
+    server = Server()
+    server.run(Calculator())
 
 
 if __name__ == "__main__":
-    server = Server()
-    server.run()
+    main()

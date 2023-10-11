@@ -10,12 +10,14 @@ class Calculator(object):
         """Class to calculate arithmetic string inputs."""
         pass
 
-    def run(self, input):
-        success = False
+    def run(self, input: str) -> None:
+        LOG.info(f"Input: {input}")
         try:
             result = float(sympify(input))
-            result = f"{result:.10f}"
-            success = True
+            result = f"{result:.8f}"
+            LOG.info(f"Output: {result}")
         except Exception as e:
-            result = f"Error: {e}".strip()
-        return result, success
+            e = str(e).replace("\n", " ")
+            result = f"Error: {e}"
+            LOG.error(e)
+        return result
