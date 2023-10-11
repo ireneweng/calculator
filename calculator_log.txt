@@ -1,9 +1,19 @@
-[16:16:49] calculator.py     :14 INFO - Input: 3+4-1
-[16:16:49] calculator.py     :18 INFO - Output: 6.00000000
-[16:17:47] calculator.py     :14 INFO - Input: 3+4-1
-[16:17:47] calculator.py     :18 INFO - Output: 6.00000000
-[16:17:51] client.py         :23 INFO - Connecting to server...
-[16:17:51] client.py         :25 INFO - Connected to 10.8.9.174:8000
-[16:17:54] client.py         :36 INFO - Sending: 8-6
-[16:17:54] client.py         :41 INFO - Received: 2.00000000
-[16:17:55] calculator_ui.py  :56 INFO - --------- Closed calculator. ---------
+[16:53:02] calculate.py      :67 INFO - - - - - - Calculator CLI - Server - - - - -
+[16:53:04] client.py         :23 INFO - Connecting to server...
+[16:53:04] client.py         :28 ERROR - Connection failed: [Errno 61] Connection refused
+[16:53:10] calculate.py      :67 INFO - - - - - - Calculator CLI - Server - - - - -
+[16:53:15] client.py         :23 INFO - Connecting to server...
+[16:53:15] client.py         :25 INFO - Connected to 0.0.0.0:8000
+[16:53:15] client.py         :36 INFO - Sending: 45-84329/5.7765
+[16:53:15] client.py         :41 INFO - Received: -14553.63238986
+[16:53:25] calculate.py      :62 INFO - - - - - - Calculator CLI - Built-In - - - - -
+[16:53:25] calculator.py     :16 INFO - Input: 3+4-1.4327
+[16:53:25] calculator.py     :20 INFO - Output: 5.56730000
+[16:53:34] calculate.py      :70 INFO - - - - - - Calculator Application - - - - -
+[16:53:34] client.py         :23 INFO - Connecting to server...
+[16:53:34] client.py         :28 ERROR - Connection failed: [Errno 61] Connection refused
+[16:53:34] calculator_ui.py  :50 INFO - Using built-in calculator
+[16:53:41] calculator.py     :16 INFO - Input: 52-*
+[16:53:41] calculator.py     :24 ERROR - Sympify of expression 'could not parse '52-*'' failed, because of exception being raised: SyntaxError: invalid syntax (<string>, line 1)
+[16:53:50] calculator.py     :16 INFO - Input: 5*98/4.86
+[16:53:50] calculator.py     :20 INFO - Output: 100.82304527

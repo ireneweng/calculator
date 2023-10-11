@@ -1,5 +1,7 @@
+# built-in imports
 import logging
 
+# third party imports
 from sympy import sympify
 
 LOG = logging.getLogger(__name__)

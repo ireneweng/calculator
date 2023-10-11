@@ -45,3 +45,17 @@ class Client(object):
         """Closes the socket connection."""
         self.socket.close()
         LOG.info("Closed connection")
+
+
+def main():
+    message = input("-> ")
+    client = Client()
+    connected = client.connect_to_host()
+    if not connected:
+        return False
+    result = client.send_to_server(message)
+    return result
+
+
+if __name__ == "__main__":
+    main()

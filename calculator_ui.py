@@ -49,10 +49,6 @@ class CalculatorUI(QtWidgets.QMainWindow, Client):
                 self.use_server = False
                 LOG.info("Using built-in calculator")
 
-    def closeEvent(self, event: QtCore.QEvent) -> None:
-        super(CalculatorUI, self).closeEvent(event)
-        LOG.info("--------- Closed calculator. ---------")
-
     # -----------------
     # UI Main Functions
     # -----------------
