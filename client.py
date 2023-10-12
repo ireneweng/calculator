@@ -8,13 +8,12 @@ class Client(object):
     """Simple client class."""
 
     def __init__(
-        self, server_ip: str = "0.0.0.0", port: int = 8000, buffer: int = 1024
+        self, ip: str = "0.0.0.0", port: int = 8000, buffer: int = 1024
     ):
-        # self.host = socket.gethostbyname(socket.gethostname())
-        self.host = server_ip
+        self.host = ip
         self.port = port
         self.buffer = buffer
-        self.server = (server_ip, port)
+        self.server = (ip, port)
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
     def connect_to_host(self) -> None:

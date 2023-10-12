@@ -12,8 +12,8 @@ from PySide6 import QtCore, QtGui, QtWidgets
 from calculator import Calculator
 from client import Client
 
-IP = "10.8.9.174"
-# IP = "172.18.0.2"
+# IP = "10.8.9.174"
+IP = "192.168.1.157"
 LOG = logging.getLogger(__name__)
 
 
@@ -25,11 +25,11 @@ class CalculatorUI(QtWidgets.QMainWindow, Client):
 
     def __init__(
         self,
+        use_server: bool = True,
+        ip: str = "0.0.0.0",
         window_title: str = "Calculator",
-        use_server: bool = False,
-        server_ip: str = "0.0.0.0",
     ) -> None:
-        super(CalculatorUI, self).__init__(server_ip=server_ip)
+        super(CalculatorUI, self).__init__(ip=ip)
         self.use_server = use_server
 
         self.right_align = False
@@ -69,9 +69,15 @@ class CalculatorUI(QtWidgets.QMainWindow, Client):
 
         # layout options
         prefs_menu = menu_bar.addMenu("Preferences")
-        self.create_menu_action("Right Align", "actn_prefs_alignment", prefs_menu)
-        self.create_menu_action("Reverse Order", "actn_prefs_order", prefs_menu)
-        self.actn_prefs_alignment.triggered.connect(self.alignment_pref_action_clicked)
+        self.create_menu_action(
+            "Right Align", "actn_prefs_alignment", prefs_menu
+        )
+        self.create_menu_action(
+            "Reverse Order", "actn_prefs_order", prefs_menu
+        )
+        self.actn_prefs_alignment.triggered.connect(
+            self.alignment_pref_action_clicked
+        )
         self.actn_prefs_order.triggered.connect(self.order_pref_action_clicked)
 
         # theme options
@@ -166,7 +172,9 @@ class CalculatorUI(QtWidgets.QMainWindow, Client):
         for button in self.button_list:
             if button in [self.btn_ops_eq, self.btn_clear]:
                 continue
-            button.clicked.connect(partial(self.build_input_string, button.text()))
+            button.clicked.connect(
+                partial(self.build_input_string, button.text())
+            )
         self.btn_ops_eq.clicked.connect(self.equal_button_clicked)
 
     # -------------------
@@ -404,7 +412,7 @@ class CalculatorUI(QtWidgets.QMainWindow, Client):
 
 def main():
     app = QtWidgets.QApplication(sys.argv)
-    calc = CalculatorUI(use_server=True, server_ip=IP)
+    calc = CalculatorUI(use_server=True, ip=IP)
     calc.show()
     sys.exit(app.exec())
 
