@@ -12,7 +12,9 @@ class Calculator(object):
     def __init__(self):
         """Class to calculate arithmetic string inputs."""
         self.operator_list = ["+", "-", "*", "/"]
-        # print(self.evaluate_expression("(((6+ ((4 + 2) * 9)+(8 + 1)) - 2) / 4)"))
+
+    def strip_parens(self, input: str) -> str:
+        return input.strip("(").strip(")")
 
     def get_base_expression(self, input: str) -> str:
         """Gets innermost expression inside parentheses."""
@@ -47,21 +49,22 @@ class Calculator(object):
             return self.compute_expression([str(result)] + r_expr)
 
     def evaluate_expression(self, expression: str) -> float:
-        """
-        Evaluates an arithmetic equation string.
-        Cannot handle negative numbers; negative substrings will break parsing.
-        Ex. "2+4+(4-5)" -> "2+4+-1" -> error
-        """
+        """Evaluates an arithmetic equation string."""
+        expression = self.strip_parens(expression)
         while any(op in expression for op in self.operator_list):
             base_expr = self.get_base_expression(expression)
-            base_stripped = base_expr.strip("(").strip(")")
+            base_stripped = self.strip_parens(base_expr)
             base_list = re.split("([\-\+])", base_stripped)
+            for i, val in enumerate(base_list):
+                if not val:
+                    neg = base_list[i + 1] + base_list[i + 2]
+                    base_list[i] = neg
+                    del base_list[i + 1 : i + 3]
             for i, val in enumerate(base_list):
                 if "/" in val or "*" in val:
                     exp_list = re.split("([\/\*])", val)
                     result = self.compute_expression(exp_list)
                     base_list[i] = result
-                    expression = expression.replace(val, str(result))
             result = self.compute_expression(base_list)
             expression = expression.replace(base_expr, str(result))
             LOG.debug(f"Expr: {expression}")
