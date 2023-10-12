@@ -13,12 +13,12 @@ class Calculator(object):
         """Class to calculate arithmetic string inputs."""
         self.operator_list = ["+", "-", "*", "/"]
         # print(self.evaluate_expression("(((6+ ((4 + 2) * 9)+(8 + 1)) - 2) / 4)"))
-        # print(self.evaluate_expression("(3+2)/0"))
 
-    def get_base_expression(self, input):
-        start = 0
-        end = len(input)
-        for i, char in enumerate(input):
+    def get_base_expression(self, input: str) -> str:
+        """Gets innermost expression inside parentheses."""
+        start, end = 0, len(input)
+        for i in range(len(input)):
+            char = input[i]
             if char == "(":
                 start = i
             elif char == ")":
@@ -26,14 +26,16 @@ class Calculator(object):
                 break
         return input[start:end]
 
-    def compute_expression(self, expr_list):
+    def compute_expression(self, expr_list: list[str]) -> float:
+        """Recursively computes a base expression from left to right."""
         if len(expr_list) == 1:
             return float(expr_list[0])
         l_expr = expr_list[:3]
+        r_expr = expr_list[3:]
         lval, rval = float(l_expr[0]), float(l_expr[2])
         op = l_expr[1]
         if op in self.operator_list:
-            match expr_list[1]:
+            match op:
                 case "+":
                     result = lval + rval
                 case "-":
@@ -42,26 +44,37 @@ class Calculator(object):
                     result = lval * rval
                 case "/":
                     result = lval / rval
-            return self.compute_expression([str(result)] + expr_list[3:])
+            return self.compute_expression([str(result)] + r_expr)
 
-    def evaluate_expression(self, expr):
-        while any(op in expr for op in self.operator_list):
-            base_expr = self.get_base_expression(expr)
+    def evaluate_expression(self, expression: str) -> float:
+        """
+        Evaluates an arithmetic equation string.
+        Cannot handle negative numbers; negative substrings will break parsing.
+        Ex. "2+4+(4-5)" -> "2+4+-1" -> error
+        """
+        while any(op in expression for op in self.operator_list):
+            base_expr = self.get_base_expression(expression)
             base_stripped = base_expr.strip("(").strip(")")
-            base_list = re.split("([\/\*\-\+])", base_stripped)
+            base_list = re.split("([\-\+])", base_stripped)
+            for i, val in enumerate(base_list):
+                if "/" in val or "*" in val:
+                    exp_list = re.split("([\/\*])", val)
+                    result = self.compute_expression(exp_list)
+                    base_list[i] = result
+                    expression = expression.replace(val, str(result))
             result = self.compute_expression(base_list)
-            expr = expr.replace(base_expr, str(result))
-        return float(expr)
+            expression = expression.replace(base_expr, str(result))
+            LOG.debug(f"Expr: {expression}")
+        return float(expression)
 
     def run(self, input: str) -> None:
+        """Runs the calculator."""
         LOG.info(f"Input: {input}")
         try:
-            result = float(sympify(input))
-            result = f"{result:.8f}"
-            LOG.info(f"Output via sympy: {result}")
-
             result = str(self.evaluate_expression(input))
-            LOG.info(f"Output via built-in: {result}")
+            LOG.info(f"Output [irene]: {result}")
+            result = float(sympify(input))
+            LOG.info(f"Output [sympy]: {result}")
         except Exception as e:
             e = str(e).replace("\n", " ")
             result = f"Error: {e}"
