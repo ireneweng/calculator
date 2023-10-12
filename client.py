@@ -23,8 +23,8 @@ class Client(object):
             self.socket.connect((self.host, self.port))
             LOG.info(f"Connected to {self.host}:{self.port}")
             return True
-        except Exception as e:
-            LOG.error(f"Connection failed: {e}")
+        except ConnectionError as e:
+            LOG.error(e)
             return False
 
     def send_to_server(self, message: str) -> str:
@@ -44,17 +44,3 @@ class Client(object):
         """Closes the socket connection."""
         self.socket.close()
         LOG.info("Closed connection")
-
-
-def main():
-    message = input("-> ")
-    client = Client()
-    connected = client.connect_to_host()
-    if not connected:
-        return False
-    result = client.send_to_server(message)
-    return result
-
-
-if __name__ == "__main__":
-    main()

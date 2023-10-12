@@ -42,17 +42,27 @@ def parse_args():
         "-i",
         type=str,
         required=False,
-        help="Calculation to solve.\n",
+        help="Arithmetic equation to solve.\n",
     )
     parser.add_argument(
-        "--server",
-        "-s",
-        action="store_true",
-        required=False,
-        help="Flag to use server.\n",
+        "-ip",
+        nargs="?",
+        const="0.0.0.0",
+        type=str,
+        help="IP address to connect. If only flag used, defaults to '0.0.0.0'.\n",
     )
     args = parser.parse_args()
     return args
+
+
+def run_client(ip):
+    message = input("-> ")
+    client_inst = client.Client(ip=ip)
+    connected = client_inst.connect_to_host()
+    if not connected:
+        return False
+    result = client_inst.send_to_server(message)
+    return result
 
 
 def main():
@@ -65,11 +75,10 @@ def main():
     if args.input:
         LOG.info("- - - - - Calculator CLI - Built-In - - - - -")
         calc = calculator.Calculator()
-        result = calc.run(args.input)
-        return result
-    elif args.server:
+        return calc.run(args.input)
+    elif args.ip:
         LOG.info("- - - - - Calculator CLI - Server - - - - -")
-        return client.main()
+        return run_client(args.ip)
     else:
         LOG.info("- - - - - Calculator Application - - - - -")
         calculator_ui.main()
