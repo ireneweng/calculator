@@ -19,6 +19,7 @@ Thanks for reviewing!
 - `calculator_log.txt`: default file where logging output is written
 - `client.py`: module containing client implementation
 - `server.py`: module containing server implementation
+- `tests.py`: module containing test cases to check implementation
 - `/themes`: folder containing css stylesheets for different ui themes
 
 ### Notes
@@ -48,6 +49,8 @@ Thanks for reviewing!
     - Make more tests
 
 ## Usage
+
+All commands are run from the terminal inside the top-level `calculator` directory.
 
 ### Server initialization
 `> docker compose up --build`
