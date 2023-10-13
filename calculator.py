@@ -1,6 +1,7 @@
 # built-in imports
 import logging
 import re
+from typing import Union
 
 # third party imports
 from sympy import sympify
@@ -14,7 +15,20 @@ class Calculator(object):
         self.operator_list = ["+", "-", "*", "/"]
 
     def strip_parens(self, input: str) -> str:
+        """Strips the outer parentheses of the given input."""
         return input.strip("(").strip(")")
+
+    def expr_is_float(self, input: str) -> bool:
+        """
+        Checks if given input string is a float.
+        Used as the break condition for evaluate_expression(),
+        mainly to handle the case of negative numbers in parentheses.
+        """
+        try:
+            float(input)
+            return True
+        except ValueError:
+            return False
 
     def get_base_expression(self, input: str) -> str:
         """Gets innermost expression inside parentheses."""
@@ -31,6 +45,7 @@ class Calculator(object):
     def resolve_negatives(self, expr_list: list[str]) -> list[str]:
         """
         Resolves negative numbers in expression list.
+        Assumes empty string item exists between operator and negative sign.
         Ex. input "7/-4-3*-2" as list:
                 -> ['7', '/', '', '-', '4', '-', '3', '*', '', '-', '2']
                 -> ['7', '/', '-4', '-', '3', '*', '-2']
@@ -40,12 +55,12 @@ class Calculator(object):
                 neg = expr_list[i + 1] + expr_list[i + 2]
                 expr_list[i] = neg
                 del expr_list[i + 1 : i + 3]
-        LOG.debug(f"Resolved negatives: {expr_list}")
+                LOG.debug(f"Resolved negatives: {expr_list}")
         return expr_list
 
     def resolve_mul_div(self, expr_list: list[str]) -> list[str]:
         """
-        Recursively solves the multiplication/division parts of an equation.
+        Recursively solves the multiplication/division parts of an expression.
         Returns the expression list with only addition/subtraction left.
         Ex. input "7/-4-3*-2" as list:
                 -> ['7', '/', '-4', '-', '3', '*', '-2']
@@ -53,11 +68,13 @@ class Calculator(object):
         """
         for i, val in enumerate(expr_list):
             if val in ["*", "/"]:
-                sol = self.compute_expression(expr_list[i - 1 : i + 2])
-                expr_list = expr_list[: i - 1] + [sol] + expr_list[i + 2 :]
+                l_idx = i - 1
+                r_idx = i + 2
+                sol = self.compute_expression(expr_list[l_idx:r_idx])
+                expr_list = expr_list[:l_idx] + [sol] + expr_list[r_idx:]
                 break
         while "*" in expr_list or "/" in expr_list:
-            LOG.debug(f"Resolving mul/div: {expr_list}")
+            LOG.debug(f"Resolved mul/div: {expr_list}")
             expr_list = self.resolve_mul_div(expr_list)
         return expr_list
 
@@ -77,7 +94,8 @@ class Calculator(object):
         l_expr = expr_list[:3]
         r_expr = expr_list[3:]
         lval, rval = float(l_expr[0]), float(l_expr[2])
-        op = l_expr[1]
+
+        op = expr_list[1]
         if op in self.operator_list:
             LOG.debug(f"Sub-equation: {expr_list}")
             match op:
@@ -92,7 +110,11 @@ class Calculator(object):
             return self.compute_expression([str(result)] + r_expr)
 
     def evaluate_expression(self, expression: str) -> float:
-        """Evaluates an arithmetic equation string."""
+        """
+        Evaluates an arithmetic equation string.
+        Assumes equation is provided in a valid format, i.e.
+        no unmatched/empty parentheses or hanging operators.
+        """
         expression = self.strip_parens(expression)
         while any(op in expression for op in self.operator_list):
             base_expr = self.get_base_expression(expression)
@@ -102,7 +124,7 @@ class Calculator(object):
             base_list = self.resolve_mul_div(base_list)
             result = self.compute_expression(base_list)
             expression = expression.replace(base_expr, str(result))
-            if len(base_list) == 1:
+            if self.expr_is_float(expression):
                 break
         return result
 
@@ -112,8 +134,9 @@ class Calculator(object):
         try:
             result = str(self.evaluate_expression(input))
             LOG.info(f"Output [irene]: {result}")
-            result = float(sympify(input))
-            LOG.info(f"Output [sympy]: {result}")
+            # check solution against library
+            # result = str(float(sympify(input)))
+            # LOG.info(f"Output [sympy]: {result}")
         except Exception as e:
             e = str(e).replace("\n", " ")
             result = f"Error: {e}"
