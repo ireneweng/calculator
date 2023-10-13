@@ -1,19 +1,196 @@
-[16:53:02] calculate.py      :67 INFO - - - - - - Calculator CLI - Server - - - - -
-[16:53:04] client.py         :23 INFO - Connecting to server...
-[16:53:04] client.py         :28 ERROR - Connection failed: [Errno 61] Connection refused
-[16:53:10] calculate.py      :67 INFO - - - - - - Calculator CLI - Server - - - - -
-[16:53:15] client.py         :23 INFO - Connecting to server...
-[16:53:15] client.py         :25 INFO - Connected to 0.0.0.0:8000
-[16:53:15] client.py         :36 INFO - Sending: 45-84329/5.7765
-[16:53:15] client.py         :41 INFO - Received: -14553.63238986
-[16:53:25] calculate.py      :62 INFO - - - - - - Calculator CLI - Built-In - - - - -
-[16:53:25] calculator.py     :16 INFO - Input: 3+4-1.4327
-[16:53:25] calculator.py     :20 INFO - Output: 5.56730000
-[16:53:34] calculate.py      :70 INFO - - - - - - Calculator Application - - - - -
-[16:53:34] client.py         :23 INFO - Connecting to server...
-[16:53:34] client.py         :28 ERROR - Connection failed: [Errno 61] Connection refused
-[16:53:34] calculator_ui.py  :50 INFO - Using built-in calculator
-[16:53:41] calculator.py     :16 INFO - Input: 52-*
-[16:53:41] calculator.py     :24 ERROR - Sympify of expression 'could not parse '52-*'' failed, because of exception being raised: SyntaxError: invalid syntax (<string>, line 1)
-[16:53:50] calculator.py     :16 INFO - Input: 5*98/4.86
-[16:53:50] calculator.py     :20 INFO - Output: 100.82304527
+[14:16:00] calculate         :76       INFO     - - - - - - Calculator CLI - Built-In - - - - -
+[14:16:00] calculator.py     :132      INFO     - Input: 7-9*(4+5+7)/4-(-5)
+[14:16:00] calculator.py     :99       DEBUG    - Sub-equation: ['4', '+', '5', '+', '7']
+[14:16:00] calculator.py     :99       DEBUG    - Sub-equation: ['9.0', '+', '7']
+[14:16:00] calculator.py     :57       DEBUG    - Resolved negatives: ['-5']
+[14:16:00] calculator.py     :57       DEBUG    - Resolved negatives: ['7', '-', '9', '*', '16.0', '/', '4', '-', '-5.0']
+[14:16:00] calculator.py     :99       DEBUG    - Sub-equation: ['9', '*', '16.0']
+[14:16:00] calculator.py     :76       DEBUG    - Resolved mul/div: ['7', '-', 144.0, '/', '4', '-', '-5.0']
+[14:16:00] calculator.py     :99       DEBUG    - Sub-equation: [144.0, '/', '4']
+[14:16:00] calculator.py     :99       DEBUG    - Sub-equation: ['7', '-', 36.0, '-', '-5.0']
+[14:16:00] calculator.py     :99       DEBUG    - Sub-equation: ['-29.0', '-', '-5.0']
+[14:16:00] calculator.py     :135      INFO     - Output [irene]: -24.0
+[14:16:07] calculate         :80       INFO     - - - - - - Calculator CLI - Server - - - - -
+[14:16:09] client.py         :22       INFO     - Connecting to server...
+[14:16:09] client.py         :27       ERROR    - [Errno 61] Connection refused
+[14:16:45] calculate         :80       INFO     - - - - - - Calculator CLI - Server - - - - -
+[14:16:46] client.py         :22       INFO     - Connecting to server...
+[14:16:46] client.py         :24       INFO     - Connected to 0.0.0.0:8000
+[14:16:46] client.py         :35       INFO     - Sending: 7-9*(4+5+7)/4-(-5)
+[14:16:46] client.py         :40       INFO     - Received: -24.0
+[14:16:57] calculate         :83       INFO     - - - - - - Calculator Application - - - - -
+[14:16:58] client.py         :22       INFO     - Connecting to server...
+[14:16:58] client.py         :27       ERROR    - [Errno 61] Connection refused
+[14:16:58] calculator_ui.py  :50       INFO     - Using built-in calculator
+[14:17:05] calculator.py     :132      INFO     - Input: 8*9-(-2)
+[14:17:05] calculator.py     :57       DEBUG    - Resolved negatives: ['-2']
+[14:17:05] calculator.py     :57       DEBUG    - Resolved negatives: ['8', '*', '9', '-', '-2.0']
+[14:17:05] calculator.py     :99       DEBUG    - Sub-equation: ['8', '*', '9']
+[14:17:05] calculator.py     :99       DEBUG    - Sub-equation: [72.0, '-', '-2.0']
+[14:17:05] calculator.py     :135      INFO     - Output [irene]: 74.0
+[14:17:18] calculator.py     :132      INFO     - Input: 7-9*(4+5+7)/4-(-5)
+[14:17:18] calculator.py     :99       DEBUG    - Sub-equation: ['4', '+', '5', '+', '7']
+[14:17:18] calculator.py     :99       DEBUG    - Sub-equation: ['9.0', '+', '7']
+[14:17:18] calculator.py     :57       DEBUG    - Resolved negatives: ['-5']
+[14:17:18] calculator.py     :57       DEBUG    - Resolved negatives: ['7', '-', '9', '*', '16.0', '/', '4', '-', '-5.0']
+[14:17:18] calculator.py     :99       DEBUG    - Sub-equation: ['9', '*', '16.0']
+[14:17:18] calculator.py     :76       DEBUG    - Resolved mul/div: ['7', '-', 144.0, '/', '4', '-', '-5.0']
+[14:17:18] calculator.py     :99       DEBUG    - Sub-equation: [144.0, '/', '4']
+[14:17:18] calculator.py     :99       DEBUG    - Sub-equation: ['7', '-', 36.0, '-', '-5.0']
+[14:17:18] calculator.py     :99       DEBUG    - Sub-equation: ['-29.0', '-', '-5.0']
+[14:17:18] calculator.py     :135      INFO     - Output [irene]: -24.0
+[14:17:33] calculate         :83       INFO     - - - - - - Calculator Application - - - - -
+[14:17:33] client.py         :22       INFO     - Connecting to server...
+[14:17:33] client.py         :24       INFO     - Connected to 10.8.9.174:8000
+[14:17:36] client.py         :35       INFO     - Sending: 7-9*(4+5+7)/4-(-5)
+[14:17:36] client.py         :40       INFO     - Received: -24.0
+[15:45:43] calculate         :85       INFO     - - - - - - Calculator Application - - - - -
+[15:45:43] client.py         :20       INFO     - Connecting to server...
+[15:45:43] client.py         :25       ERROR    - [Errno 61] Connection refused
+[15:45:43] calculator_ui.py  :50       INFO     - Using built-in calculator
+[15:46:56] calculate         :78       INFO     - - - - - - Calculator CLI - Built-In - - - - -
+[15:46:56] calculator.py     :132      INFO     - Input: 7+2
+[15:46:56] calculator.py     :99       DEBUG    - Sub-equation: ['7', '+', '2']
+[15:46:56] calculator.py     :135      INFO     - Output [irene]: 9.0
+[15:48:32] calculate         :78       INFO     - - - - - - Calculator CLI - Built-In - - - - -
+[15:48:32] calculator.py     :132      INFO     - Input: (6+7*9)/-2+4+(-10)
+[15:48:32] calculator.py     :99       DEBUG    - Sub-equation: ['7', '*', '9']
+[15:48:32] calculator.py     :99       DEBUG    - Sub-equation: ['6', '+', 63.0]
+[15:48:32] calculator.py     :57       DEBUG    - Resolved negatives: ['-10']
+[15:48:32] calculator.py     :57       DEBUG    - Resolved negatives: ['69.0', '/', '-2', '+', '4', '+', '', '-', '10.0']
+[15:48:32] calculator.py     :57       DEBUG    - Resolved negatives: ['69.0', '/', '-2', '+', '4', '+', '-10.0']
+[15:48:32] calculator.py     :99       DEBUG    - Sub-equation: ['69.0', '/', '-2']
+[15:48:32] calculator.py     :99       DEBUG    - Sub-equation: [-34.5, '+', '4', '+', '-10.0']
+[15:48:32] calculator.py     :99       DEBUG    - Sub-equation: ['-30.5', '+', '-10.0']
+[15:48:32] calculator.py     :135      INFO     - Output [irene]: -40.5
+[15:59:15] calculate         :78       INFO     - - - - - - Calculator CLI - Built-In - - - - -
+[15:59:15] calculator.py     :132      INFO     - Input: (6+7*9)
+[15:59:15] calculator.py     :99       DEBUG    - Sub-equation: ['7', '*', '9']
+[15:59:15] calculator.py     :99       DEBUG    - Sub-equation: ['6', '+', 63.0]
+[15:59:15] calculator.py     :135      INFO     - Output [irene]: 69.0
+[15:59:20] calculate         :78       INFO     - - - - - - Calculator CLI - Built-In - - - - -
+[15:59:20] calculator.py     :132      INFO     - Input: 6+7*9
+[15:59:20] calculator.py     :99       DEBUG    - Sub-equation: ['7', '*', '9']
+[15:59:20] calculator.py     :99       DEBUG    - Sub-equation: ['6', '+', 63.0]
+[15:59:20] calculator.py     :135      INFO     - Output [irene]: 69.0
+[15:59:25] calculate         :78       INFO     - - - - - - Calculator CLI - Built-In - - - - -
+[15:59:25] calculator.py     :132      INFO     - Input: 6 + 7 * 9
+[15:59:25] calculator.py     :99       DEBUG    - Sub-equation: [' 7 ', '*', ' 9']
+[15:59:25] calculator.py     :99       DEBUG    - Sub-equation: ['6 ', '+', 63.0]
+[15:59:25] calculator.py     :135      INFO     - Output [irene]: 69.0
+[16:00:16] calculate         :78       INFO     - - - - - - Calculator CLI - Built-In - - - - -
+[16:00:16] calculator.py     :132      INFO     - Input: 6 + (7) * 9
+[16:00:16] calculator.py     :99       DEBUG    - Sub-equation: [' 7.0 ', '*', ' 9']
+[16:00:16] calculator.py     :99       DEBUG    - Sub-equation: ['6 ', '+', 63.0]
+[16:00:16] calculator.py     :135      INFO     - Output [irene]: 69.0
+[16:00:59] calculate         :78       INFO     - - - - - - Calculator CLI - Built-In - - - - -
+[16:00:59] calculator.py     :132      INFO     - Input: 6 + (7) * 9
+[16:00:59] calculator.py     :99       DEBUG    - Sub-equation: [' 7.0 ', '*', ' 9']
+[16:00:59] calculator.py     :99       DEBUG    - Sub-equation: ['6 ', '+', 63.0]
+[16:00:59] calculator.py     :135      INFO     - Output [irene]: 69.0
+[16:01:15] calculate         :78       INFO     - - - - - - Calculator CLI - Built-In - - - - -
+[16:01:15] calculator.py     :132      INFO     - Input: 6 --7) * 9
+[16:01:15] calculator.py     :57       DEBUG    - Resolved negatives: ['6 ', '-', '-7']
+[16:01:15] calculator.py     :99       DEBUG    - Sub-equation: ['6 ', '-', '-7']
+[16:01:15] calculator.py     :99       DEBUG    - Sub-equation: ['13.0 ', '*', ' 9']
+[16:01:15] calculator.py     :135      INFO     - Output [irene]: 117.0
+[16:01:19] calculate         :78       INFO     - - - - - - Calculator CLI - Built-In - - - - -
+[16:01:19] calculator.py     :132      INFO     - Input: 6 --7 * 9
+[16:01:19] calculator.py     :57       DEBUG    - Resolved negatives: ['6 ', '-', '-7 ', '*', ' 9']
+[16:01:19] calculator.py     :99       DEBUG    - Sub-equation: ['-7 ', '*', ' 9']
+[16:01:19] calculator.py     :99       DEBUG    - Sub-equation: ['6 ', '-', -63.0]
+[16:01:19] calculator.py     :135      INFO     - Output [irene]: 69.0
+[16:01:22] calculate         :78       INFO     - - - - - - Calculator CLI - Built-In - - - - -
+[16:01:22] calculator.py     :132      INFO     - Input: 6 - -7 * 9
+[16:01:22] calculator.py     :99       DEBUG    - Sub-equation: ['7 ', '*', ' 9']
+[16:01:22] calculator.py     :142      ERROR    - could not convert string to float: ' '
+[16:01:30] calculate         :78       INFO     - - - - - - Calculator CLI - Built-In - - - - -
+[16:01:30] calculator.py     :132      INFO     - Input: 6 -(-7) * 9
+[16:01:30] calculator.py     :57       DEBUG    - Resolved negatives: ['-7']
+[16:01:30] calculator.py     :57       DEBUG    - Resolved negatives: ['6 ', '-', '-7.0 ', '*', ' 9']
+[16:01:30] calculator.py     :99       DEBUG    - Sub-equation: ['-7.0 ', '*', ' 9']
+[16:01:30] calculator.py     :99       DEBUG    - Sub-equation: ['6 ', '-', -63.0]
+[16:01:30] calculator.py     :135      INFO     - Output [irene]: 69.0
+[16:02:00] calculate         :78       INFO     - - - - - - Calculator CLI - Built-In - - - - -
+[16:02:00] calculator.py     :133      INFO     - Input: 6 - -7 * 9
+[16:02:00] calculator.py     :99       DEBUG    - Sub-equation: ['7 ', '*', ' 9']
+[16:02:00] calculator.py     :143      ERROR    - could not convert string to float: ' '
+[16:02:14] calculate         :78       INFO     - - - - - - Calculator CLI - Built-In - - - - -
+[16:02:14] calculator.py     :133      INFO     - Input: 6 --7 * 9
+[16:02:14] calculator.py     :57       DEBUG    - Resolved negatives: ['6 ', '-', '-7 ', '*', ' 9']
+[16:02:14] calculator.py     :99       DEBUG    - Sub-equation: ['-7 ', '*', ' 9']
+[16:02:14] calculator.py     :99       DEBUG    - Sub-equation: ['6 ', '-', -63.0]
+[16:02:14] calculator.py     :136      INFO     - Output [irene]: 69.0
+[16:02:23] calculate         :78       INFO     - - - - - - Calculator CLI - Built-In - - - - -
+[16:02:23] calculator.py     :133      INFO     - Input: 6 - -7 * 9
+[16:02:23] calculator.py     :99       DEBUG    - Sub-equation: ['7 ', '*', ' 9']
+[16:02:23] calculator.py     :143      ERROR    - could not convert string to float: ' '
+[16:02:40] calculate         :78       INFO     - - - - - - Calculator CLI - Built-In - - - - -
+[16:02:40] calculator.py     :133      INFO     - Input: 6 - -7 * 9
+[16:02:40] calculator.py     :99       DEBUG    - Sub-equation: ['7 ', '*', ' 9']
+[16:02:40] calculator.py     :143      ERROR    - could not convert string to float: ' '
+[16:03:17] calculate         :78       INFO     - - - - - - Calculator CLI - Built-In - - - - -
+[16:03:17] calculator.py     :132      INFO     - Input: 6 --7 * 9
+[16:03:17] calculator.py     :57       DEBUG    - Resolved negatives: ['6 ', '-', '-7 ', '*', ' 9']
+[16:03:17] calculator.py     :99       DEBUG    - Sub-equation: ['-7 ', '*', ' 9']
+[16:03:17] calculator.py     :99       DEBUG    - Sub-equation: ['6 ', '-', -63.0]
+[16:03:17] calculator.py     :135      INFO     - Output [irene]: 69.0
+[16:03:23] calculate         :78       INFO     - - - - - - Calculator CLI - Built-In - - - - -
+[16:03:23] calculator.py     :132      INFO     - Input: 6--7*9
+[16:03:23] calculator.py     :57       DEBUG    - Resolved negatives: ['6', '-', '-7', '*', '9']
+[16:03:23] calculator.py     :99       DEBUG    - Sub-equation: ['-7', '*', '9']
+[16:03:23] calculator.py     :99       DEBUG    - Sub-equation: ['6', '-', -63.0]
+[16:03:23] calculator.py     :135      INFO     - Output [irene]: 69.0
+[16:03:30] calculate         :78       INFO     - - - - - - Calculator CLI - Built-In - - - - -
+[16:03:30] calculator.py     :132      INFO     - Input: 6 -(-7) * 9
+[16:03:30] calculator.py     :57       DEBUG    - Resolved negatives: ['-7']
+[16:03:30] calculator.py     :57       DEBUG    - Resolved negatives: ['6 ', '-', '-7.0 ', '*', ' 9']
+[16:03:30] calculator.py     :99       DEBUG    - Sub-equation: ['-7.0 ', '*', ' 9']
+[16:03:30] calculator.py     :99       DEBUG    - Sub-equation: ['6 ', '-', -63.0]
+[16:03:30] calculator.py     :135      INFO     - Output [irene]: 69.0
+[16:03:37] calculate         :78       INFO     - - - - - - Calculator CLI - Built-In - - - - -
+[16:03:37] calculator.py     :132      INFO     - Input: 6 - -7 * 9
+[16:03:37] calculator.py     :99       DEBUG    - Sub-equation: ['7 ', '*', ' 9']
+[16:03:37] calculator.py     :142      ERROR    - could not convert string to float: ' '
+[16:04:37] calculate         :78       INFO     - - - - - - Calculator CLI - Built-In - - - - -
+[16:04:37] calculator.py     :132      INFO     - Input: 6 - -7 * 9
+[16:04:37] calculator.py     :99       DEBUG    - Sub-equation: ['7 ', '*', ' 9']
+[16:04:37] calculator.py     :142      ERROR    - could not convert string to float: ' '
+[16:04:43] calculate         :78       INFO     - - - - - - Calculator CLI - Built-In - - - - -
+[16:04:43] calculator.py     :132      INFO     - Input: 6 --7 * 9
+[16:04:43] calculator.py     :57       DEBUG    - Resolved negatives: ['6 ', '-', '-7 ', '*', ' 9']
+[16:04:43] calculator.py     :99       DEBUG    - Sub-equation: ['-7 ', '*', ' 9']
+[16:04:43] calculator.py     :99       DEBUG    - Sub-equation: ['6 ', '-', -63.0]
+[16:04:43] calculator.py     :135      INFO     - Output [irene]: 69.0
+[16:07:55] calculate         :78       INFO     - - - - - - Calculator CLI - Built-In - - - - -
+[16:07:55] calculator.py     :132      INFO     - Input: 6 --7 * 9((3)
+[16:07:55] calculator.py     :57       DEBUG    - Resolved negatives: ['6 ', '-', '-7 ', '*', ' 93.0']
+[16:07:55] calculator.py     :99       DEBUG    - Sub-equation: ['-7 ', '*', ' 93.0']
+[16:07:55] calculator.py     :99       DEBUG    - Sub-equation: ['6 ', '-', -651.0]
+[16:07:55] calculator.py     :135      INFO     - Output [irene]: 657.0
+[16:14:43] calculate         :82       INFO     - - - - - - Calculator CLI - Server - - - - -
+[16:14:46] client.py         :20       INFO     - Connecting to server...
+[16:14:46] client.py         :22       INFO     - Connected to 0.0.0.0:8000
+[16:14:46] client.py         :33       INFO     - Sending: "3+4"
+[16:14:46] client.py         :38       INFO     - Received: Error: could not convert string to float: '"3'
+[16:14:55] calculate         :82       INFO     - - - - - - Calculator CLI - Server - - - - -
+[16:14:56] client.py         :20       INFO     - Connecting to server...
+[16:14:56] client.py         :22       INFO     - Connected to 0.0.0.0:8000
+[16:14:56] client.py         :33       INFO     - Sending: 3+4
+[16:14:56] client.py         :38       INFO     - Received: 7.0
+[16:19:29] calculate         :82       INFO     - - - - - - Calculator CLI - Server - - - - -
+[16:19:33] client.py         :20       INFO     - Connecting to server...
+[16:19:33] client.py         :25       ERROR    - [Errno 61] Connection refused
+[16:19:44] calculate         :78       INFO     - - - - - - Calculator CLI - Built-In - - - - -
+[16:19:44] calculator.py     :132      INFO     - Input: 3-5*9
+[16:19:44] calculator.py     :99       DEBUG    - Sub-equation: ['5', '*', '9']
+[16:19:44] calculator.py     :99       DEBUG    - Sub-equation: ['3', '-', 45.0]
+[16:19:44] calculator.py     :135      INFO     - Output [irene]: -42.0
+[16:33:05] calculate         :82       INFO     - - - - - - Calculator CLI - Server - - - - -
+[16:33:06] client.py         :20       INFO     - Connecting to server...
+[16:33:06] client.py         :25       ERROR    - [Errno 61] Connection refused
+[16:33:43] calculate         :82       INFO     - - - - - - Calculator CLI - Server - - - - -
+[16:33:47] client.py         :20       INFO     - Connecting to server...
+[16:33:47] client.py         :22       INFO     - Connected to 0.0.0.0:8000
+[16:33:47] client.py         :33       INFO     - Sending: 3+2*-8
+[16:33:47] client.py         :38       INFO     - Received: -13.0

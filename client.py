@@ -7,9 +7,7 @@ LOG = logging.getLogger(__name__)
 class Client(object):
     """Simple client class."""
 
-    def __init__(
-        self, ip: str = "0.0.0.0", port: int = 8000, buffer: int = 1024
-    ):
+    def __init__(self, ip: str = "0.0.0.0", port: int = 8000, buffer: int = 1024):
         self.host = ip
         self.port = port
         self.buffer = buffer
@@ -20,7 +18,7 @@ class Client(object):
         """Attempts a connection to the server."""
         try:
             LOG.info("Connecting to server...")
-            self.socket.connect((self.host, self.port))
+            self.socket.connect(self.server)
             LOG.info(f"Connected to {self.host}:{self.port}")
             return True
         except ConnectionError as e:

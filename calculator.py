@@ -1,7 +1,6 @@
 # built-in imports
 import logging
 import re
-from typing import Union
 
 # third party imports
 from sympy import sympify

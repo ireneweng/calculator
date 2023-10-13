@@ -28,13 +28,6 @@ RUN adduser \
     --uid "${UID}" \
     appuser
 
-# RUN apt-get update
-# RUN apt-get install -y --no-install-recommends libgl1-mesa-dev \
-#     libxkbcommon-x11-0 \ 
-#     libfontconfig1 \
-#     libglib2.0 \
-#     libx11-xcb-dev
-
 # Download dependencies as a separate step to take advantage of Docker's caching.
 # Leverage a cache mount to /root/.cache/pip to speed up subsequent builds.
 # Leverage a bind mount to requirements.txt to avoid having to copy them into
