@@ -23,16 +23,18 @@ Thanks for reviewing!
 - `/themes`: folder containing css stylesheets for different ui themes
 
 ### Notes
-- Assumes input is a valid arithmetic string
+- Assumes input is a correctly formatted arithmetic string
     - No unmatched or empty parentheses
-    - Numbers on both sides of an operator
+    - Numbers on both sides of an operator (`+-1` or `--1` assumes negative 1)
+    - Invalid inputs may still compute, but no guarantee that it's correct
 - Allows parentheses around negatives
-    - `6-(-7)*9` and `6--7*9` are both valid
+    - `6-(-7)*9` is valid
+    - `6--7*9` is also valid
 - Spaces with negatives may throw errors
-    - `6 --7 * 9` runs
+    - `6 --7 * 9` computes
     - `6 - -7 * 9` does not
-- I'm sure there are more ways to break the input that I haven't found yet
-    - Program may still compute, but no guarantee that it's correct
+- Does not support exponents
+    - `6 ** 7` fails
 - When server is used with CLI, connection closes after one input
 - When server is used with GUI, connection closes when GUI is closed
 
