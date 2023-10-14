@@ -1,5 +1,6 @@
 # built-in imports
 import logging
+import socket
 import sys
 from collections import OrderedDict
 from functools import partial
@@ -12,7 +13,12 @@ from PySide6 import QtCore, QtGui, QtWidgets
 from calculator import Calculator
 from client import Client
 
-IP = "10.8.9.174"
+
+try:
+    IP = socket.gethostbyname(socket.gethostname())
+except socket.gaierror:
+    # replace with your own ip address
+    IP = "10.8.9.174"
 LOG = logging.getLogger(__name__)
 
 
@@ -27,7 +33,7 @@ class CalculatorUI(QtWidgets.QMainWindow, Client):
         use_server: bool = True,
         ip: str = "0.0.0.0",
         window_title: str = "Calculator",
-    ) -> None:
+    ):
         super(CalculatorUI, self).__init__(ip=ip)
         self.use_server = use_server
 

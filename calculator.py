@@ -9,8 +9,9 @@ LOG = logging.getLogger(__name__)
 
 
 class Calculator(object):
+    """Class to calculate arithmetic string inputs."""
+
     def __init__(self):
-        """Class to calculate arithmetic string inputs."""
         self.operator_list = ["+", "-", "*", "/"]
 
     def strip_parens(self, input: str) -> str:
