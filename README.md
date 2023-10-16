@@ -1,10 +1,7 @@
-# Irene's Super Cool Calculator
-A simple calculator tool with command-line options, a user interface, and server support.
+# Calculator
+A simple calculator tool with command-line options, a user interface with preference settings, and server support.
 
 ## Overview
-This was a fun project to work on with lots of new things to figure out along the way.\
-I learned about sockets and Docker, and I also brushed up on recursion.\
-Thanks for reviewing!
 
 ### Requirements
 - Python 3
@@ -13,14 +10,14 @@ Thanks for reviewing!
 - [sympy](https://www.sympy.org/en/index.html) (for testing)
 
 ### Package Files
-- `calculate`: main executable script to launch tool
-- `calculator.py`: module containing the implementation
-- `calculator_ui.py`: module containing the user interface
-- `calculator_log.txt`: default file where logging output is written
-- `client.py`: module containing client implementation
-- `server.py`: module containing server implementation
-- `tests.py`: module containing test cases to check calculator implementation
-- `/themes`: folder containing css stylesheets for different ui themes
+- [`calculate`](calculate): main executable script to launch tool
+- [`calculator.py`](calculator.py): module containing the implementation
+- [`calculator_ui.py`](calculator_ui.py): module containing the user interface
+- [`calculator_log.txt`](calculator_log.txt): default file where logging output is written
+- [`client.py`](client.py): module containing client implementation
+- [`server.py`](server.py): module containing server implementation
+- [`tests.py`](tests.py): module containing test cases to check calculator implementation
+- [`/themes`](themes): folder containing css stylesheets for different ui themes
 
 ### Notes
 - Assumes the input is a correctly formatted arithmetic string
