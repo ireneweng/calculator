@@ -9,6 +9,7 @@ import calculator
 import calculator_ui
 import client
 
+
 LOG = logging.getLogger(__name__)
 LOG_FILE = "calculator_log.txt"
 LOG_FORMAT = "%(filename)-18s:%(lineno)-8d %(levelname)-8s - %(message)s"

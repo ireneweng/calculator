@@ -1,13 +1,16 @@
 import logging
 import socket
 
+
 LOG = logging.getLogger(__name__)
 
 
 class Client(object):
     """Simple client class."""
 
-    def __init__(self, ip: str = "0.0.0.0", port: int = 8000, buffer: int = 1024):
+    def __init__(
+        self, ip: str = "0.0.0.0", port: int = 8000, buffer: int = 1024
+    ):
         self.host = ip
         self.port = port
         self.buffer = buffer
