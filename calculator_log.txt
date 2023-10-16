@@ -1,48 +1,44 @@
-[17:32:29] calculate         :78       INFO     - - - - - - Calculator CLI - Built-In - - - - -
-[17:32:29] calculator.py     :132      INFO     - Input: 3+5-(25)
-[17:32:29] calculator.py     :99       DEBUG    - Sub-equation: ['3', '+', '5', '-', '25.0']
-[17:32:29] calculator.py     :99       DEBUG    - Sub-equation: ['8.0', '-', '25.0']
-[17:32:29] calculator.py     :135      INFO     - Output [irene]: -17.0
-[17:32:39] calculate         :82       INFO     - - - - - - Calculator CLI - Server - - - - -
-[17:32:42] client.py         :20       INFO     - Connecting to server...
-[17:32:42] client.py         :25       ERROR    - [Errno 61] Connection refused
-[17:32:54] calculate         :82       INFO     - - - - - - Calculator CLI - Server - - - - -
-[17:32:59] client.py         :20       INFO     - Connecting to server...
-[17:32:59] client.py         :22       INFO     - Connected to 0.0.0.0:8000
-[17:32:59] client.py         :33       INFO     - Sending: 3+4-6*7
-[17:32:59] client.py         :38       INFO     - Received: -35.0
-[17:33:09] calculate         :82       INFO     - - - - - - Calculator CLI - Server - - - - -
-[17:33:10] client.py         :20       INFO     - Connecting to server...
-[17:33:10] client.py         :22       INFO     - Connected to 0.0.0.0:8000
-[17:33:10] client.py         :33       INFO     - Sending: 2+4-3+(4-5)*3/6-(3-54)
-[17:33:10] client.py         :38       INFO     - Received: 53.5
-[17:33:20] calculate         :85       INFO     - - - - - - Calculator Application - - - - -
-[17:33:21] client.py         :20       INFO     - Connecting to server...
-[17:33:21] client.py         :25       ERROR    - [Errno 61] Connection refused
-[17:33:21] calculator_ui.py  :49       INFO     - Using built-in calculator
-[17:33:24] calculator.py     :132      INFO     - Input: 8*9
-[17:33:24] calculator.py     :99       DEBUG    - Sub-equation: ['8', '*', '9']
-[17:33:24] calculator.py     :135      INFO     - Output [irene]: 72.0
-[17:33:28] calculator.py     :132      INFO     - Input: 72.0/4.5
-[17:33:28] calculator.py     :99       DEBUG    - Sub-equation: ['72.0', '/', '4.5']
-[17:33:28] calculator.py     :135      INFO     - Output [irene]: 16.0
-[17:33:31] calculator.py     :132      INFO     - Input: 16.0*7
-[17:33:31] calculator.py     :99       DEBUG    - Sub-equation: ['16.0', '*', '7']
-[17:33:31] calculator.py     :135      INFO     - Output [irene]: 112.0
-[17:33:37] calculate         :85       INFO     - - - - - - Calculator Application - - - - -
-[17:33:38] client.py         :20       INFO     - Connecting to server...
-[17:33:38] client.py         :22       INFO     - Connected to 10.8.9.174:8000
-[17:33:41] client.py         :33       INFO     - Sending: 15-6
-[17:33:41] client.py         :38       INFO     - Received: 9.0
-[17:33:45] client.py         :33       INFO     - Sending: 9.0*8.25
-[17:33:45] client.py         :38       INFO     - Received: 74.25
-[17:33:51] client.py         :33       INFO     - Sending: 7-9*(4+5+7)/4-(-5)
-[17:33:51] client.py         :38       INFO     - Received: -24.0
-[17:33:55] calculator_ui.py  :358      DEBUG    - Cleared theme
-[17:33:57] calculator_ui.py  :355      DEBUG    - Set theme to Minimal
-[17:33:59] calculator_ui.py  :355      DEBUG    - Set theme to Pastel
-[17:34:00] calculator_ui.py  :355      DEBUG    - Set theme to Terminal
-[17:34:02] calculator_ui.py  :355      DEBUG    - Set theme to Twilight
-[17:34:04] calculator_ui.py  :341      DEBUG    - Set numpad right-align to True
-[17:34:06] calculator_ui.py  :347      DEBUG    - Set numpad reverse order to True
-[17:34:07] calculator_ui.py  :355      DEBUG    - Set theme to Pastel
+[23:46:09] calculate         :78       INFO     - - - - - - Calculator CLI - Built-In - - - - -
+[23:46:09] calculator.py     :133      INFO     - Input: 3+4-6.32/0.43728
+[23:46:09] calculator.py     :100      DEBUG    - Sub-equation: ['6.32', '/', '0.43728']
+[23:46:09] calculator.py     :100      DEBUG    - Sub-equation: ['3', '+', '4', '-', 14.452982070984268]
+[23:46:09] calculator.py     :100      DEBUG    - Sub-equation: ['7.0', '-', 14.452982070984268]
+[23:46:09] calculator.py     :136      INFO     - Output [irene]: -7.452982070984268
+[23:46:09] calculator.py     :139      INFO     - Output [sympy]: -7.452982070984268
+[23:46:14] calculate         :82       INFO     - - - - - - Calculator CLI - Server - - - - -
+[23:46:17] client.py         :23       INFO     - Connecting to server...
+[23:46:17] client.py         :28       ERROR    - [Errno 61] Connection refused
+[23:46:34] calculate         :82       INFO     - - - - - - Calculator CLI - Server - - - - -
+[23:46:38] client.py         :23       INFO     - Connecting to server...
+[23:46:38] client.py         :25       INFO     - Connected to 0.0.0.0:8000
+[23:46:38] client.py         :36       INFO     - Sending: 2+4-3+(4-5)*3/6-(3-54)
+[23:46:38] client.py         :41       INFO     - Received: 53.5
+[23:46:50] calculate         :82       INFO     - - - - - - Calculator CLI - Server - - - - -
+[23:46:57] client.py         :23       INFO     - Connecting to server...
+[23:46:57] client.py         :25       INFO     - Connected to 0.0.0.0:8000
+[23:46:57] client.py         :36       INFO     - Sending: 5+6--0.328*7.543
+[23:46:57] client.py         :41       INFO     - Received: 13.474104
+[23:47:05] calculate         :85       INFO     - - - - - - Calculator Application - - - - -
+[23:47:07] client.py         :23       INFO     - Connecting to server...
+[23:47:07] client.py         :28       ERROR    - [Errno 61] Connection refused
+[23:47:07] calculator_ui.py  :55       INFO     - Using built-in calculator
+[23:47:11] calculator.py     :133      INFO     - Input: 8*9
+[23:47:11] calculator.py     :100      DEBUG    - Sub-equation: ['8', '*', '9']
+[23:47:11] calculator.py     :136      INFO     - Output [irene]: 72.0
+[23:47:11] calculator.py     :139      INFO     - Output [sympy]: 72.0
+[23:47:22] calculate         :85       INFO     - - - - - - Calculator Application - - - - -
+[23:47:23] client.py         :23       INFO     - Connecting to server...
+[23:47:23] client.py         :25       INFO     - Connected to 192.168.1.157:8000
+[23:47:31] client.py         :36       INFO     - Sending: 5-6.3*0.25
+[23:47:31] client.py         :41       INFO     - Received: 3.425
+[23:47:37] calculator_ui.py  :369      DEBUG    - Set theme to Minimal
+[23:47:39] calculator_ui.py  :369      DEBUG    - Set theme to Pastel
+[23:47:42] calculator_ui.py  :369      DEBUG    - Set theme to Terminal
+[23:47:44] calculator_ui.py  :369      DEBUG    - Set theme to Twilight
+[23:47:46] calculator_ui.py  :372      DEBUG    - Cleared theme
+[23:47:49] calculator_ui.py  :355      DEBUG    - Set numpad right-align to True
+[23:47:51] calculator_ui.py  :361      DEBUG    - Set numpad reverse order to True
+[23:47:53] calculator_ui.py  :369      DEBUG    - Set theme to Terminal
+[23:47:56] calculator_ui.py  :369      DEBUG    - Set theme to Twilight
+[23:47:57] calculator_ui.py  :355      DEBUG    - Set numpad right-align to False
+[23:47:59] calculator_ui.py  :361      DEBUG    - Set numpad reverse order to False

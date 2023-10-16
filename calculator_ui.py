@@ -74,15 +74,9 @@ class CalculatorUI(QtWidgets.QMainWindow, Client):
 
         # layout options
         prefs_menu = menu_bar.addMenu("Preferences")
-        self.create_menu_action(
-            "Right Align", "actn_prefs_alignment", prefs_menu
-        )
-        self.create_menu_action(
-            "Reverse Order", "actn_prefs_order", prefs_menu
-        )
-        self.actn_prefs_alignment.triggered.connect(
-            self.alignment_pref_action_clicked
-        )
+        self.create_menu_action("Right Align", "actn_prefs_alignment", prefs_menu)
+        self.create_menu_action("Reverse Order", "actn_prefs_order", prefs_menu)
+        self.actn_prefs_alignment.triggered.connect(self.alignment_pref_action_clicked)
         self.actn_prefs_order.triggered.connect(self.order_pref_action_clicked)
 
         # theme options
@@ -173,14 +167,12 @@ class CalculatorUI(QtWidgets.QMainWindow, Client):
         self.input_lineedit.returnPressed.connect(self.equal_button_clicked)
 
         # numpad buttons
+        self.btn_ops_eq.clicked.connect(self.equal_button_clicked)
         self.btn_clear.clicked.connect(self.clear_button_clicked)
         for button in self.button_list:
             if button in [self.btn_ops_eq, self.btn_clear]:
                 continue
-            button.clicked.connect(
-                partial(self.build_input_string, button.text())
-            )
-        self.btn_ops_eq.clicked.connect(self.equal_button_clicked)
+            button.clicked.connect(partial(self.build_input_string, button.text()))
 
     # -------------------
     # UI Helper Functions
@@ -204,7 +196,7 @@ class CalculatorUI(QtWidgets.QMainWindow, Client):
             group: group in which to add action item
             checkable: bool indicating whether action can be checked
 
-        Returns:
+        Returns: menu action item
         """
         action = QtGui.QAction(text, menu, checkable=checkable)
         setattr(self, var_name, action)
