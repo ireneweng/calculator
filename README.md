@@ -54,26 +54,24 @@ Thanks for reviewing!
     - Could use some sort of escape/exit command
 - Add option for user to choose implemention mode, e.g. mine or sympy
 
-Maybe there's some combination of ops/parens/negatives that returns the wrong solution but I have yet to find it. More tests can't hurt!
-
 ## Usage
 
 All commands are run from inside the top-level `calculator` directory.
 
 ### Server initialization
-    > docker compose up --build
+    docker compose up --build
 
 Must have Docker set up and logged in already.
 
 ### Command-line with local implementation
-    > ./calculate -i {input string}
-    > ./calculate -i "(6+7*9)/-2+4+(-10)"
+    ./calculate -i {input string}
+    ./calculate -i "(6+7*9)/-2+4+(-10)"
 
 This runs the command-line calculator without connecting to the server.
 
 ### Command-line with server
-    > ./calculate -ip {optional ip address}
-    > ./calculate -ip "10.8.9.174"
+    ./calculate -ip {optional ip address}
+    ./calculate -ip "10.8.9.174"
 
 This runs the command-line calculator and attempts to connect to the server.\
 If no host is provided, will use ip address "0.0.0.0".
@@ -86,7 +84,7 @@ If connection is established, accepts user input like this:
 *Note*: Do not put input in quotes, will already be sent to server as string
 
 ### User interface
-    > ./calculate
+    ./calculate
 
 This runs the calculator GUI and attempts to connect to the server.\
 If the connection fails, will fall back to the local built-in implementation.
