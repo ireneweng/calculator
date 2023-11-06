@@ -2,7 +2,7 @@
 A simple calculator tool with command-line options, a user interface with preference settings, and server support.
 
 ## Overview
-This project is a very basic demo of UI design, implementation, and general coding practices typical of my work as a pipeline developer and technical artist. Thanks for looking!
+This is a very basic demo of a PySide widget, originally completed in two weeks for a coding test.
 
 ### Requirements
 - Python 3
